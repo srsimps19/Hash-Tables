@@ -76,6 +76,13 @@ class HashTable:
         Returns None if the key is not found.
         Fill this in.
         '''
+        index = self._hash_mod(key)
+        duo = self.storage[index]
+
+        if duo is None:
+            return None
+        else:
+            return duo.value
 
     def resize(self):
         '''
@@ -83,7 +90,15 @@ class HashTable:
         rehash all key/value pairs.
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+
+        for duo in self.storage:
+            if duo is not None:
+                new_index = self._hash_mod(duo.key)
+                new_storage[new_index] = duo
+
+        self.storage = new_storage
 
 
 
