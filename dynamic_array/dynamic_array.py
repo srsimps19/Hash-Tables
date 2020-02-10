@@ -15,8 +15,8 @@ class DynamicArray:
             print("Error: Index out of bounds")
             return
 
-        for i in range(self.count, index, -1):
-            self.storage[i] = self.storage[i -1]
+        for i in range(self.count, index, - 1):
+            self.storage[i] = self.storage[i - 1]
         
         self.storage[index] = value
         self.count += 1
