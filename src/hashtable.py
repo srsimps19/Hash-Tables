@@ -73,10 +73,20 @@ class HashTable:
         '''
         index = self._hash_mod(key)
 
-        if self.storage[index] is None:
-            print("Warning: key not found")
-            return
-        self.storage[index] = None
+        current_duo = self.storage[index]
+        last_duo = None
+
+        while current_duo is not None and current_duo.key != key:
+            last_duo = current_duo
+            current_duo = last_duo.next
+
+        if current_duo is None:
+            print("ERROR: Unable to remove entry with key " + key)
+        else:
+            if last_duo is None:  
+                self.storage[index] = current_duo.next
+            else:
+                last_duo.next = current_duo.next
 
     def retrieve(self, key):
         '''
@@ -99,15 +109,17 @@ class HashTable:
         rehash all key/value pairs.
         Fill this in.
         '''
-        self.capacity *= 2
-        new_storage = [None] * self.capacity
+        old_storage = self.storage
+        self.capacity = 2 * self.capacity
+        self.storage = [None] * self.capacity
 
-        for duo in self.storage:
-            if duo is not None:
-                new_index = self._hash_mod(duo.key)
-                new_storage[new_index] = duo
+        current_duo = None
 
-        self.storage = new_storage
+        for bucket in old_storage:
+            current_duo = bucket
+            while current_duo is not None:
+                self.insert(current_duo.key, current_duo.value)
+                current_duo = current_duo.next
 
 
 
