@@ -1,5 +1,6 @@
 import random
 ​
+
 def how_many_before_collision(buckets, loops=1):
     '''
     Roll random hash indexes into buckets and print
