@@ -49,11 +49,19 @@ class HashTable:
         '''
         index = self._hash_mod(key)
 
-        if self.storage[index] is not None:
-            print("Warning: Index collision")
-            return
+        current_duo = self.storage[index]
+        last_duo = None
 
-        self.storage[index] = LinkedPair(key, value)
+        while current_duo is not None and current_duo.key != key:
+            last_duo = current_duo
+            current_duo = last_duo.next
+
+        if current_duo is not None:
+            current_duo.value = value
+        else:
+            new_duo = LinkedPair(key, value)
+            new_duo.next = self.storage[index]
+            self.storage[index] = new_duo
 
 
 
@@ -77,12 +85,13 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        duo = self.storage[index]
 
-        if duo is None:
-            return None
-        else:
-            return duo.value
+        current_duo = self.storage[index]
+
+        while current_duo is not None:
+            if(current_duo.key == key):
+                return current_duo.value
+            current_duo = current_duo.next
 
     def resize(self):
         '''
